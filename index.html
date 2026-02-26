@@ -8,25 +8,9 @@
   * { box-sizing: border-box; margin: 0; padding: 0; }
   body { font-family: 'Poppins', sans-serif; background: #f0f0f5; padding: 32px 36px; }
 
-  .slide {
-    background: #fff;
-    border-radius: 16px;
-    padding: 36px 40px;
-    max-width: 1200px;
-    margin: 0 auto 48px;
-    box-shadow: 0 4px 24px rgba(0,0,0,0.08);
-  }
+  .slide { background: #fff; border-radius: 16px; padding: 36px 40px; max-width: 1200px; margin: 0 auto 48px; box-shadow: 0 4px 24px rgba(0,0,0,0.08); }
 
-  .banner {
-    max-width: 1200px;
-    margin: 0 auto 40px;
-    background: #ff0077;
-    border-radius: 12px;
-    padding: 18px 36px;
-    display: flex;
-    align-items: center;
-    gap: 16px;
-  }
+  .banner { max-width: 1200px; margin: 0 auto 40px; background: #ff0077; border-radius: 12px; padding: 18px 36px; display: flex; align-items: center; gap: 16px; }
   .banner h3 { font-size: 20px; font-weight: 700; color: #fff; white-space: nowrap; }
   .banner-line { flex: 1; height: 1px; background: rgba(255,255,255,0.3); }
 
@@ -571,7 +555,67 @@
 <!-- ===================== BANNER: DESIGN UPDATE ===================== -->
 <div class="banner"><h3>Design Update</h3><div class="banner-line"></div></div>
 
-<!-- ===================== SLIDE 8: UX DISCOVERY - PROTO PERSONA ===================== -->
+<!-- ===================== SLIDE 8: MULTI-ORG FILTERING ===================== -->
+<div style="max-width:1200px;margin:0 auto 48px;border-radius:16px;overflow:hidden;box-shadow:0 4px 24px rgba(0,0,0,0.08);">
+  <div style="background:linear-gradient(135deg,#ff0077 0%,#953cbd 60%,#5461c8 100%);padding:28px 40px;position:relative;overflow:hidden;">
+    <div style="position:absolute;right:-60px;top:-60px;width:220px;height:220px;border-radius:50%;background:rgba(255,255,255,0.06);"></div>
+    <div style="position:absolute;left:400px;bottom:-40px;width:140px;height:140px;border-radius:50%;background:rgba(255,255,255,0.04);"></div>
+    <div style="position:relative;z-index:2;display:flex;align-items:center;justify-content:space-between;gap:20px;">
+      <div>
+        <div style="display:flex;align-items:center;gap:10px;margin-bottom:6px;">
+          <span style="font-size:24px;">🏢</span>
+          <h1 style="font-size:24px;font-weight:900;color:#fff;line-height:1.1;">Multi-Org Filtering: In Development</h1>
+        </div>
+        <p style="font-size:16px;color:rgba(255,255,255,0.8);font-weight:500;">Building the ability to filter and select across multiple organisations in one go</p>
+      </div>
+      <span style="background:rgba(255,255,255,0.18);border:1px solid rgba(255,255,255,0.35);color:#fff;font-size:16px;font-weight:700;padding:7px 16px;border-radius:20px;white-space:nowrap;flex-shrink:0;">🔧 In Development</span>
+    </div>
+  </div>
+  <div style="background:#fff;padding:32px 40px;">
+    <div style="display:grid;grid-template-columns:1fr 1.7fr;gap:32px;align-items:stretch;">
+      <div style="display:flex;flex-direction:column;gap:12px;">
+        <p style="font-size:14px;font-weight:700;color:#ff0077;text-transform:uppercase;letter-spacing:1.2px;margin-bottom:4px;">Solution We Are Building</p>
+        <div style="border:1.5px solid #5461c8;border-radius:12px;padding:16px 18px;display:flex;align-items:flex-start;gap:14px;">
+          <div style="width:34px;height:34px;border-radius:50%;background:linear-gradient(135deg,#ff0077,#953cbd);display:flex;align-items:center;justify-content:center;flex-shrink:0;"><span style="color:#fff;font-size:16px;font-weight:900;">✓</span></div>
+          <div>
+            <p style="font-size:16px;font-weight:700;color:#111;line-height:1.5;">Modal <strong style="color:#ff0077;">multi-selection of orgs</strong> on click</p>
+            <p style="font-size:14px;background:linear-gradient(135deg,#ff0077,#953cbd,#5461c8);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;font-weight:600;margin-top:2px;line-height:1.4;">Pick multiple organisations from a searchable modal</p>
+          </div>
+        </div>
+        <div style="border:1.5px solid #5461c8;border-radius:12px;padding:16px 18px;display:flex;align-items:flex-start;gap:14px;">
+          <div style="width:34px;height:34px;border-radius:50%;background:linear-gradient(135deg,#ff0077,#953cbd);display:flex;align-items:center;justify-content:center;flex-shrink:0;"><span style="color:#fff;font-size:16px;font-weight:900;">✓</span></div>
+          <div>
+            <p style="font-size:16px;font-weight:700;color:#111;line-height:1.5;"><strong style="color:#ff0077;">"Select All"</strong> checkbox after filtering</p>
+            <p style="font-size:14px;background:linear-gradient(135deg,#ff0077,#953cbd,#5461c8);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;font-weight:600;margin-top:2px;line-height:1.4;">Bulk-select all results returned by a search filter</p>
+          </div>
+        </div>
+        <div style="border:1.5px solid #5461c8;border-radius:12px;padding:16px 18px;display:flex;align-items:flex-start;gap:14px;">
+          <div style="width:34px;height:34px;border-radius:50%;background:linear-gradient(135deg,#ff0077,#953cbd);display:flex;align-items:center;justify-content:center;flex-shrink:0;"><span style="color:#fff;font-size:16px;font-weight:900;">✓</span></div>
+          <div>
+            <p style="font-size:16px;font-weight:700;color:#111;line-height:1.5;">Select orgs from <strong style="color:#ff0077;">different clients in one go</strong></p>
+            <p style="font-size:14px;background:linear-gradient(135deg,#ff0077,#953cbd,#5461c8);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;font-weight:600;margin-top:2px;line-height:1.4;">Cross-client org selection in a single action</p>
+          </div>
+        </div>
+        <div style="border:1.5px solid #5461c8;border-radius:12px;padding:16px 18px;display:flex;align-items:flex-start;gap:14px;">
+          <div style="width:34px;height:34px;border-radius:50%;background:linear-gradient(135deg,#ff0077,#953cbd);display:flex;align-items:center;justify-content:center;flex-shrink:0;"><span style="color:#fff;font-size:16px;font-weight:900;">✓</span></div>
+          <div>
+            <p style="font-size:16px;font-weight:700;color:#111;line-height:1.5;">Quick review <strong style="color:#ff0077;">of the total orgs selected</strong> with counter</p>
+            <p style="font-size:14px;background:linear-gradient(135deg,#ff0077,#953cbd,#5461c8);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;font-weight:600;margin-top:2px;line-height:1.4;">Live count shown next to the "Save filter" button</p>
+          </div>
+        </div>
+        <a href="https://jam.dev/c/20fd2dd6-2aad-4fb4-8b3e-69ccc6e4fa59" target="_blank" style="display:flex;align-items:center;justify-content:space-between;border:1.5px solid #ff0077;border-radius:12px;padding:14px 18px;background:#fff8fb;text-decoration:none;gap:12px;margin-top:4px;">
+          <span style="font-size:16px;color:#111;font-weight:600;">&#128279; Dev Jam Prototype Iteration</span>
+          <span style="font-size:14px;font-weight:700;color:#ff0077;background:#ff007715;padding:5px 12px;border-radius:20px;border:1.5px solid #ff0077;white-space:nowrap;">View Demo ↗</span>
+        </a>
+      </div>
+      <div style="border-radius:12px;overflow:hidden;border:2px dashed #e0e0e0;background:linear-gradient(145deg,#fafafa,#f3f3f8);min-height:380px;position:relative;">
+        <img src="https://raw.githubusercontent.com/jdennis-ctrl/umiverse-monthly-review/main/multi-org.png" alt="Multi-Org Filtering" style="width:100%;height:100%;object-fit:cover;display:block;border-radius:10px;"/>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ===================== SLIDE 9: UX DISCOVERY - PROTO PERSONA ===================== -->
 <div class="slide" style="padding:0;overflow:hidden;">
   <div class="pp-hero">
     <div class="pp-hero-circle-1"></div>
@@ -637,7 +681,7 @@
   </div>
 </div>
 
-<!-- ===================== SLIDE 9: UX DISCOVERY - BUNDLES ===================== -->
+<!-- ===================== SLIDE 10: UX DISCOVERY - BUNDLES ===================== -->
 <div style="max-width:1200px;margin:0 auto 48px;border-radius:16px;overflow:hidden;box-shadow:0 4px 24px rgba(0,0,0,0.08);">
   <div style="background:linear-gradient(135deg,#ff0077 0%,#953cbd 60%,#5461c8 100%);padding:28px 40px;position:relative;overflow:hidden;">
     <div style="position:absolute;right:-60px;top:-60px;width:220px;height:220px;border-radius:50%;background:rgba(255,255,255,0.06);"></div>
@@ -658,7 +702,7 @@
       <div style="display:flex;flex-direction:column;gap:16px;">
         <div style="display:flex;flex-direction:column;gap:12px;">
           <div style="border:1.5px solid #5461c8;border-radius:12px;padding:16px 18px;display:flex;align-items:flex-start;gap:14px;">
-            <div style="width:34px;height:34px;border-radius:50%;background:linear-gradient(135deg,#ff0077,#953cbd);display:flex;align-items:center;justify-content:center;flex-shrink:0;"><span style="color:#fff;font-size:15px;font-weight:900;">✓</span></div>
+            <div style="width:34px;height:34px;border-radius:50%;background:linear-gradient(135deg,#ff0077,#953cbd);display:flex;align-items:center;justify-content:center;flex-shrink:0;"><span style="color:#fff;font-size:16px;font-weight:900;">✓</span></div>
             <div>
               <p style="font-size:16px;font-weight:700;color:#111;line-height:1.5;">Current architecture of Bundles</p>
               <p style="font-size:14px;background:linear-gradient(135deg,#ff0077,#953cbd,#5461c8);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;font-weight:600;margin-top:2px;line-height:1.4;">Mapping out how bundles are structured today</p>
@@ -691,7 +735,7 @@
   </div>
 </div>
 
-<!-- ===================== SLIDE 10: EXPLORATION - BULK EDITING BUNDLES ===================== -->
+<!-- ===================== SLIDE 11: EXPLORATION - BULK EDITING BUNDLES ===================== -->
 <div class="slide">
   <div class="header">
     <div class="header-text">
