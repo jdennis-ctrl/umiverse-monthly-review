@@ -1,0 +1,774 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>UMiverse Monthly Review — Identity & Access</title>
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;900&display=swap" rel="stylesheet">
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body { font-family: 'Poppins', sans-serif; background: #f4f4f8; padding: 40px 36px; color: #111; }
+
+  /* ── SHARED COMPONENTS ── */
+  .slide {
+    background: #fff;
+    border-radius: 20px;
+    padding: 40px 44px;
+    max-width: 1160px;
+    margin: 0 auto 40px;
+    box-shadow: 0 4px 32px rgba(0,0,0,0.07);
+  }
+  .banner {
+    max-width: 1160px;
+    margin: 0 auto 40px;
+    background: #ff0077;
+    border-radius: 14px;
+    padding: 20px 44px;
+    display: flex;
+    align-items: center;
+    gap: 18px;
+  }
+  .banner h3 { font-size: 20px; font-weight: 700; color: #fff; letter-spacing: 0.3px; white-space: nowrap; }
+  .banner .banner-line { flex: 1; height: 1px; background: rgba(255,255,255,0.3); }
+
+  .slide-header { display: flex; align-items: flex-start; margin-bottom: 28px; gap: 16px; }
+  .title-icon { width: 52px; height: 52px; border-radius: 12px; flex-shrink: 0; }
+  .slide-header-text h2 { font-size: 24px; font-weight: 700; color: #ff0077; line-height: 1.2; }
+  .slide-header-text p { font-size: 13px; color: #888; margin-top: 4px; max-width: 520px; line-height: 1.6; }
+
+  /* ── TITLE SLIDE ── */
+  .title-slide {
+    background: #111;
+    border-radius: 20px;
+    padding: 0;
+    max-width: 1160px;
+    margin: 0 auto 40px;
+    box-shadow: 0 8px 48px rgba(255,0,119,0.2);
+    overflow: hidden;
+    min-height: 360px;
+    position: relative;
+    display: flex;
+    align-items: center;
+  }
+  .title-slide-bg {
+    position: absolute; inset: 0; pointer-events: none;
+    background:
+      radial-gradient(ellipse 60% 80% at 80% 50%, rgba(255,0,119,0.18) 0%, transparent 70%),
+      radial-gradient(ellipse 40% 60% at 20% 80%, rgba(84,97,200,0.12) 0%, transparent 70%);
+  }
+  .title-slide-grid {
+    position: absolute; inset: 0; pointer-events: none;
+    background-image: linear-gradient(rgba(255,0,119,0.06) 1px, transparent 1px), linear-gradient(90deg, rgba(255,0,119,0.06) 1px, transparent 1px);
+    background-size: 48px 48px;
+  }
+  .title-content { position: relative; z-index: 1; padding: 60px 64px; display: flex; align-items: center; gap: 48px; width: 100%; }
+  .title-left { flex: 1; }
+  .title-kicker { font-size: 11px; font-weight: 700; color: #ff0077; letter-spacing: 3px; text-transform: uppercase; margin-bottom: 14px; }
+  .title-main { font-size: 48px; font-weight: 900; color: #fff; line-height: 1.1; margin-bottom: 16px; letter-spacing: -1px; }
+  .title-main span { color: #ff0077; }
+  .title-sub { font-size: 15px; color: #888; line-height: 1.6; max-width: 440px; margin-bottom: 28px; }
+  .title-badges { display: flex; gap: 10px; flex-wrap: wrap; }
+  .title-badge { background: rgba(255,255,255,0.06); border: 1px solid rgba(255,255,255,0.12); color: #ccc; font-size: 12px; font-weight: 600; padding: 6px 14px; border-radius: 30px; }
+  .title-badge.pink { background: rgba(255,0,119,0.15); border-color: rgba(255,0,119,0.3); color: #ff6eb3; }
+  .title-right { flex-shrink: 0; }
+  .orbital { position: relative; width: 180px; height: 180px; }
+  .orbital-ring {
+    position: absolute; inset: 0; border-radius: 50%;
+    border: 1.5px solid rgba(255,0,119,0.2);
+    animation: spin 12s linear infinite;
+  }
+  .orbital-ring:nth-child(2) { inset: 20px; border-color: rgba(255,0,119,0.15); animation-duration: 9s; animation-direction: reverse; }
+  .orbital-ring:nth-child(3) { inset: 40px; border-color: rgba(255,0,119,0.1); animation-duration: 6s; }
+  .orbital-dot {
+    position: absolute; width: 10px; height: 10px; border-radius: 50%; background: #ff0077;
+    top: -5px; left: 50%; transform: translateX(-50%);
+    box-shadow: 0 0 8px rgba(255,0,119,0.8);
+  }
+  .orbital-dot-2 { background: #5461c8; box-shadow: 0 0 8px rgba(84,97,200,0.8); }
+  .orbital-center {
+    position: absolute; inset: 0; display: flex; align-items: center; justify-content: center;
+  }
+  .orbital-logo { width: 70px; height: 70px; border-radius: 16px; }
+  @keyframes spin { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }
+
+  /* ── FLIP CARD (Overview) ── */
+  .overview-flip-card { width: 100%; perspective: 1200px; cursor: pointer; user-select: none; }
+  .flip-inner {
+    position: relative; width: 100%; min-height: 260px;
+    transition: transform 0.65s cubic-bezier(0.4,0.2,0.2,1); transform-style: preserve-3d;
+  }
+  .overview-flip-card.flipped .flip-inner { transform: rotateY(180deg); }
+  .flip-front, .flip-back {
+    position: absolute; width: 100%; top: 0; left: 0;
+    backface-visibility: hidden; -webkit-backface-visibility: hidden;
+    border-radius: 14px; padding: 32px 36px;
+  }
+  .flip-front { background: linear-gradient(135deg,#ff0077 0%,#c8005f 100%); color: #fff; display: flex; flex-direction: column; justify-content: center; gap: 24px; }
+  .flip-back { background: #111; color: #fff; transform: rotateY(180deg); display: flex; flex-direction: column; justify-content: center; gap: 20px; }
+  .flip-front .big-num { font-size: 72px; font-weight: 900; line-height: 1; letter-spacing: -2px; }
+  .flip-front .big-label { font-size: 18px; font-weight: 600; opacity: 0.85; }
+  .flip-front .sub-stats { display: flex; gap: 32px; }
+  .flip-front .sub-stat strong { font-size: 28px; font-weight: 900; display: block; line-height: 1; }
+  .flip-front .sub-stat span { font-size: 12px; opacity: 0.75; font-weight: 500; }
+  .flip-hint { font-size: 11px; opacity: 0.6; margin-top: auto; }
+  .flip-back h3 { font-size: 16px; font-weight: 700; color: #ff0077; }
+  .back-items { display: grid; grid-template-columns: 1fr 1fr; gap: 10px 24px; }
+  .back-item { font-size: 13px; color: #ccc; line-height: 1.5; }
+  .back-item strong { color: #fff; font-weight: 600; }
+
+  /* ── SPRINT TABS & THEME CARDS ── */
+  .sprint-tabs { display: flex; gap: 8px; margin-bottom: 24px; }
+  .sprint-tab {
+    padding: 8px 20px; border-radius: 30px; font-size: 13px; font-weight: 600;
+    cursor: pointer; border: 2px solid #e0e0e8; background: #fff; color: #999;
+    transition: all 0.2s; font-family: 'Poppins', sans-serif;
+  }
+  .sprint-tab.active { background: #ff0077; color: #fff; border-color: #ff0077; }
+  .sprint-tab:hover:not(.active) { border-color: #ff0077; color: #ff0077; }
+  .theme-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+  .theme-card { border: 1.5px solid #f0f0f4; border-radius: 14px; overflow: hidden; cursor: pointer; transition: box-shadow 0.2s, border-color 0.2s; }
+  .theme-card:hover { box-shadow: 0 4px 20px rgba(255,0,119,0.1); border-color: #ffb3d1; }
+  .theme-card.open { border-color: #ff0077; }
+  .theme-header { padding: 14px 18px; display: flex; align-items: center; gap: 10px; background: #fafafa; transition: background 0.2s; }
+  .theme-card.open .theme-header { background: #fff0f7; }
+  .theme-icon { width: 34px; height: 34px; border-radius: 8px; display: flex; align-items: center; justify-content: center; font-size: 16px; flex-shrink: 0; }
+  .theme-name { font-size: 13px; font-weight: 700; color: #111; flex: 1; }
+  .theme-meta { font-size: 11px; font-weight: 600; color: #ff0077; background: #fff0f7; padding: 2px 8px; border-radius: 20px; white-space: nowrap; }
+  .theme-chevron { font-size: 12px; color: #aaa; transition: transform 0.25s; }
+  .theme-card.open .theme-chevron { transform: rotate(180deg); }
+  .theme-body { max-height: 0; overflow: hidden; transition: max-height 0.35s ease, padding 0.2s; padding: 0 18px; }
+  .theme-card.open .theme-body { max-height: 800px; padding: 14px 18px; }
+  .ticket-row { display: flex; align-items: flex-start; gap: 10px; padding: 8px 0; border-bottom: 1px solid #f4f4f8; }
+  .ticket-row:last-child { border-bottom: none; }
+  .ticket-dot { width: 7px; height: 7px; border-radius: 50%; background: #ff0077; flex-shrink: 0; margin-top: 6px; }
+  .ticket-plain { font-size: 12.5px; color: #333; line-height: 1.5; flex: 1; }
+  .ticket-key-link { font-size: 10px; font-weight: 600; color: #aaa; font-family: monospace; white-space: nowrap; text-decoration: none; flex-shrink: 0; padding-top: 3px; }
+  .ticket-key-link:hover { color: #ff0077; }
+  .sprint-pill { font-size: 9px; font-weight: 700; padding: 2px 6px; border-radius: 10px; flex-shrink: 0; white-space: nowrap; margin-top: 3px; }
+  .pill-51 { background: #e8f4ff; color: #2980b9; }
+  .pill-52 { background: #eef8ee; color: #27ae60; }
+  .sprint-stats-bar { display: grid; grid-template-columns: repeat(4, 1fr); gap: 12px; margin-top: 24px; }
+  .sprint-stat { background: #fafafa; border: 1.5px solid #f0f0f4; border-radius: 12px; padding: 14px 16px; text-align: center; }
+  .sprint-stat-num { font-size: 28px; font-weight: 900; color: #ff0077; line-height: 1; }
+  .sprint-stat-label { font-size: 11px; color: #888; margin-top: 4px; line-height: 1.4; }
+  .sprint-panel { display: none; }
+  .sprint-panel.active { display: block; }
+
+  /* ── FEATURE FOCUS SLIDES ── */
+  .feature-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; }
+  .feature-card { border-radius: 14px; overflow: hidden; border: 1.5px solid #f0f0f4; }
+  .feature-card-head { padding: 14px 18px; display: flex; align-items: center; gap: 10px; }
+  .feature-card-body { padding: 16px 18px; font-size: 13px; color: #444; line-height: 1.7; }
+  .detail-item { display: flex; align-items: flex-start; gap: 10px; margin-bottom: 10px; }
+  .detail-item:last-child { margin-bottom: 0; }
+  .dot { width: 7px; height: 7px; border-radius: 50%; background: #ff0077; flex-shrink: 0; margin-top: 6px; }
+  .pill { display: inline-block; font-size: 11px; font-weight: 700; padding: 3px 10px; border-radius: 20px; margin-right: 6px; margin-bottom: 4px; }
+
+  /* ── DESIGN UPDATE SLIDES ── */
+  .design-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 24px; align-items: start; }
+  .design-label { font-size: 10px; font-weight: 700; color: #ff0077; text-transform: uppercase; letter-spacing: 2px; margin-bottom: 12px; }
+
+  /* ── UX DISCOVERY ── */
+  .persona-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; }
+  .persona-card { background: #111; border-radius: 14px; padding: 20px; color: #fff; position: relative; overflow: hidden; }
+  .persona-card::before { content: ''; position: absolute; inset: 0; background: linear-gradient(135deg, rgba(255,0,119,0.1) 0%, transparent 60%); pointer-events: none; }
+  .persona-avatar { width: 48px; height: 48px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 22px; margin-bottom: 12px; }
+  .persona-name { font-size: 15px; font-weight: 700; color: #fff; margin-bottom: 4px; }
+  .persona-role { font-size: 11px; color: #ff6eb3; font-weight: 600; margin-bottom: 12px; }
+  .persona-needs { font-size: 12px; color: #aaa; line-height: 1.6; }
+  .persona-tag { display: inline-block; font-size: 10px; font-weight: 700; padding: 2px 8px; border-radius: 10px; background: rgba(255,0,119,0.15); color: #ff6eb3; margin-right: 4px; margin-top: 8px; }
+
+  /* ── UPCOMING ── */
+  .upcoming-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; }
+  .upcoming-card { border-radius: 14px; overflow: hidden; border: 1.5px solid #f0f0f4; }
+  .upcoming-head { padding: 14px 18px; display: flex; align-items: center; gap: 12px; color: #fff; }
+  .upcoming-head-text { display: flex; flex-direction: column; }
+  .upcoming-head-title { font-size: 15px; font-weight: 700; }
+  .upcoming-head-sub { font-size: 11px; opacity: 0.8; }
+  .upcoming-body { padding: 16px 18px; }
+
+  @media (max-width: 700px) {
+    .theme-grid, .feature-grid, .design-grid, .persona-grid, .upcoming-grid { grid-template-columns: 1fr; }
+    .sprint-stats-bar { grid-template-columns: 1fr 1fr; }
+    .slide { padding: 24px 20px; }
+    .back-items { grid-template-columns: 1fr; }
+    body { padding: 20px 16px; }
+    .title-content { flex-direction: column; padding: 40px 32px; }
+    .flip-front .sub-stats { flex-wrap: wrap; gap: 16px; }
+  }
+</style>
+</head>
+<body>
+
+<!-- ═══════════════════════════════════════════
+     TITLE SLIDE
+═══════════════════════════════════════════ -->
+<div class="title-slide">
+  <div class="title-slide-bg"></div>
+  <div class="title-slide-grid"></div>
+  <div class="title-content">
+    <div class="title-left">
+      <div class="title-kicker">UMiverse · Identity &amp; Access</div>
+      <div class="title-main">Monthly<br><span>Review</span></div>
+      <div class="title-sub">A look at what the Identity &amp; Access team shipped, explored, and designed — covering Sprints 51 &amp; 52.</div>
+      <div class="title-badges">
+        <span class="title-badge pink">Sprints 51 &amp; 52</span>
+        <span class="title-badge">WorkOS Migration</span>
+        <span class="title-badge">Admin Modernisation</span>
+        <span class="title-badge">UX Discovery</span>
+      </div>
+    </div>
+    <div class="title-right">
+      <div class="orbital">
+        <div class="orbital-ring"><div class="orbital-dot"></div></div>
+        <div class="orbital-ring"><div class="orbital-dot orbital-dot-2"></div></div>
+        <div class="orbital-ring"></div>
+        <div class="orbital-center">
+          <img class="orbital-logo"
+            src="https://raw.githubusercontent.com/jdennis-ctrl/umiverse-monthly--review/main/identity-logo"
+            alt="I&A"
+            onerror="this.style.cssText='width:70px;height:70px;border-radius:16px;background:#ff0077;';this.removeAttribute('src')"/>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════════
+     OVERVIEW SLIDE
+═══════════════════════════════════════════ -->
+<div class="slide">
+  <div class="slide-header">
+    <img class="title-icon"
+      src="https://raw.githubusercontent.com/jdennis-ctrl/umiverse-monthly--review/main/identity-logo"
+      alt="I&A"
+      onerror="this.style.cssText='width:52px;height:52px;border-radius:12px;background:#ff0077;flex-shrink:0;';this.removeAttribute('src')"/>
+    <div class="slide-header-text">
+      <h2>Monthly Overview:- Identity / Access</h2>
+      <p>Sprints 51 &amp; 52 — click the card to see what's behind the numbers</p>
+    </div>
+  </div>
+  <div class="overview-flip-card" id="overviewCard" onclick="this.classList.toggle('flipped')">
+    <div class="flip-inner">
+      <div class="flip-front">
+        <div>
+          <div class="big-num">31</div>
+          <div class="big-label">tickets completed across Sprints 51 &amp; 52</div>
+        </div>
+        <div class="sub-stats">
+          <div class="sub-stat"><strong>10</strong><span>Sprint 51</span></div>
+          <div class="sub-stat"><strong>21</strong><span>Sprint 52</span></div>
+          <div class="sub-stat"><strong>4</strong><span>focus areas</span></div>
+          <div class="sub-stat"><strong>3</strong><span>investigations done</span></div>
+        </div>
+        <div class="flip-hint">↩ tap to see what we focused on</div>
+      </div>
+      <div class="flip-back">
+        <h3>What did the team focus on?</h3>
+        <div class="back-items">
+          <div class="back-item"><strong>🔐 Moving to WorkOS</strong><br>Upgrading our sign-in platform to something more powerful and scalable</div>
+          <div class="back-item"><strong>🖥️ Admin tool rebuild</strong><br>Replacing the back-office user management tool — section by section</div>
+          <div class="back-item"><strong>🏢 Multi-org search</strong><br>Making it faster to find and manage users across multiple organisations</div>
+          <div class="back-item"><strong>⚙️ AI coding guides</strong><br>Adding guidance files across 11 codebases so AI tools work the way our team does</div>
+        </div>
+        <div class="flip-hint">↩ tap to go back</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════════
+     TEAM BANNER
+═══════════════════════════════════════════ -->
+<div class="banner">
+  <h3>Identity &amp; Access</h3>
+  <div class="banner-line"></div>
+  <h3>Sprints 51 &amp; 52</h3>
+</div>
+
+<!-- ═══════════════════════════════════════════
+     SPRINT DETAIL SLIDE
+═══════════════════════════════════════════ -->
+<div class="slide">
+  <div class="slide-header">
+    <img class="title-icon"
+      src="https://raw.githubusercontent.com/jdennis-ctrl/umiverse-monthly--review/main/identity-logo"
+      alt="I&A"
+      onerror="this.style.cssText='width:52px;height:52px;border-radius:12px;background:#ff0077;flex-shrink:0;';this.removeAttribute('src')"/>
+    <div class="slide-header-text">
+      <h2>Monthly Overview:- Identity / Access</h2>
+      <p>Filter by sprint, then click any theme to expand — written in plain English for everyone</p>
+    </div>
+  </div>
+
+  <div class="sprint-tabs">
+    <button class="sprint-tab active" onclick="switchSprint('all',this)">All work (31)</button>
+    <button class="sprint-tab" onclick="switchSprint('51',this)">Sprint 51 (10)</button>
+    <button class="sprint-tab" onclick="switchSprint('52',this)">Sprint 52 (21)</button>
+  </div>
+
+  <!-- ALL -->
+  <div class="sprint-panel active" id="panel-all">
+    <div class="theme-grid">
+      <div class="theme-card" onclick="toggleTheme(this)">
+        <div class="theme-header">
+          <div class="theme-icon" style="background:#e8f1ff;">🔐</div>
+          <span class="theme-name">Moving to a new sign-in platform (WorkOS)</span>
+          <span class="theme-meta">7 items</span>
+          <span class="theme-chevron">▼</span>
+        </div>
+        <div class="theme-body">
+          <div class="ticket-row"><div class="ticket-dot"></div><span class="ticket-plain"><strong>Planned the data transfer</strong> — mapped how to safely move all our users and organisations to the new sign-in system without losing anything.</span><a class="ticket-key-link" href="https://globalwebindex.atlassian.net/browse/UMDA-3458" target="_blank">UMDA-3458</a><span class="sprint-pill pill-51">S51</span></div>
+          <div class="ticket-row"><div class="ticket-dot"></div><span class="ticket-plain"><strong>Cleared out ghost accounts</strong> — removed thousands of empty organisations that had no users attached, keeping our data clean.</span><a class="ticket-key-link" href="https://globalwebindex.atlassian.net/browse/UMDA-3566" target="_blank">UMDA-3566</a><span class="sprint-pill pill-51">S51</span></div>
+          <div class="ticket-row"><div class="ticket-dot"></div><span class="ticket-plain"><strong>Built a real-time sync listener</strong> — our system now automatically reacts whenever something changes in WorkOS (e.g. a new user or a deletion), keeping both platforms in sync.</span><a class="ticket-key-link" href="https://globalwebindex.atlassian.net/browse/UMDA-3579" target="_blank">UMDA-3579</a><span class="sprint-pill pill-51">S51</span></div>
+          <div class="ticket-row"><div class="ticket-dot"></div><span class="ticket-plain"><strong>Decided on the sign-in page approach</strong> — evaluated WorkOS's built-in login page vs our custom one (SUSI) and produced a clear recommendation for the team.</span><a class="ticket-key-link" href="https://globalwebindex.atlassian.net/browse/UMDA-3671" target="_blank">UMDA-3671</a><span class="sprint-pill pill-51">S51</span></div>
+          <div class="ticket-row"><div class="ticket-dot"></div><span class="ticket-plain"><strong>Built the migration tools</strong> — created the automated scripts that will move users and organisations into WorkOS when we're ready to switch over.</span><a class="ticket-key-link" href="https://globalwebindex.atlassian.net/browse/UMDA-3694" target="_blank">UMDA-3694</a><span class="sprint-pill pill-52">S52</span></div>
+          <div class="ticket-row"><div class="ticket-dot"></div><span class="ticket-plain"><strong>Connected the "new user" signal</strong> — when someone signs up via WorkOS, our system now receives that notification and processes the new account correctly.</span><a class="ticket-key-link" href="https://globalwebindex.atlassian.net/browse/UMDA-3695" target="_blank">UMDA-3695</a><span class="sprint-pill pill-52">S52</span></div>
+          <div class="ticket-row"><div class="ticket-dot"></div><span class="ticket-plain"><strong>Engineering alignment session</strong> — team deep-dive to agree on next build steps and unblock the work ahead.</span><a class="ticket-key-link" href="https://globalwebindex.atlassian.net/browse/UMDA-3696" target="_blank">UMDA-3696</a><span class="sprint-pill pill-52">S52</span></div>
+        </div>
+      </div>
+      <div class="theme-card" onclick="toggleTheme(this)">
+        <div class="theme-header">
+          <div class="theme-icon" style="background:#e8fff4;">🖥️</div>
+          <span class="theme-name">Rebuilding the user management tool</span>
+          <span class="theme-meta">10 items</span>
+          <span class="theme-chevron">▼</span>
+        </div>
+        <div class="theme-body">
+          <div class="ticket-row"><div class="ticket-dot"></div><span class="ticket-plain"><strong>Built the Access Plan view</strong> — admins can now see exactly what platform access a user has and edit it from one clean page.</span><a class="ticket-key-link" href="https://globalwebindex.atlassian.net/browse/UMDA-3586" target="_blank">UMDA-3586</a><span class="sprint-pill pill-51">S51</span></div>
+          <div class="ticket-row"><div class="ticket-dot"></div><span class="ticket-plain"><strong>Built the Trial view</strong> — shows whether a user is on a free trial, when it expires, and lets the team manage it in one place.</span><a class="ticket-key-link" href="https://globalwebindex.atlassian.net/browse/UMDA-3588" target="_blank">UMDA-3588</a><span class="sprint-pill pill-51">S51</span></div>
+          <div class="ticket-row"><div class="ticket-dot"></div><span class="ticket-plain"><strong>Verified old links redirect correctly</strong> — QA confirmed bookmarks and saved links to old admin pages now route to the right new page.</span><a class="ticket-key-link" href="https://globalwebindex.atlassian.net/browse/UMDA-3659" target="_blank">UMDA-3659</a><span class="sprint-pill pill-51">S51</span></div>
+          <div class="ticket-row"><div class="ticket-dot"></div><span class="ticket-plain"><strong>Added automated tests</strong> for the Access section — future changes won't accidentally break things without us knowing.</span><a class="ticket-key-link" href="https://globalwebindex.atlassian.net/browse/UMDA-3660" target="_blank">UMDA-3660</a><span class="sprint-pill pill-51">S51</span></div>
+          <div class="ticket-row"><div class="ticket-dot"></div><span class="ticket-plain"><strong>Added an unsaved changes warning</strong> — admins editing a user's access are now prompted to save before navigating away.</span><a class="ticket-key-link" href="https://globalwebindex.atlassian.net/browse/UMDA-3587" target="_blank">UMDA-3587</a><span class="sprint-pill pill-52">S52</span></div>
+          <div class="ticket-row"><div class="ticket-dot"></div><span class="ticket-plain"><strong>Built the Devices view</strong> — shows all login devices for a user, with a link to register new ones.</span><a class="ticket-key-link" href="https://globalwebindex.atlassian.net/browse/UMDA-3589" target="_blank">UMDA-3589</a><span class="sprint-pill pill-52">S52</span></div>
+          <div class="ticket-row"><div class="ticket-dot"></div><span class="ticket-plain"><strong>Built the Perishable Links view</strong> — one-use access links that expire automatically can now be viewed and managed in one place.</span><a class="ticket-key-link" href="https://globalwebindex.atlassian.net/browse/UMDA-3590" target="_blank">UMDA-3590</a><span class="sprint-pill pill-52">S52</span></div>
+          <div class="ticket-row"><div class="ticket-dot"></div><span class="ticket-plain"><strong>Updated navigation links</strong> — clicking a user anywhere in the tool now takes you directly to the correct new access page.</span><a class="ticket-key-link" href="https://globalwebindex.atlassian.net/browse/UMDA-3592" target="_blank">UMDA-3592</a><span class="sprint-pill pill-52">S52</span></div>
+          <div class="ticket-row"><div class="ticket-dot"></div><span class="ticket-plain"><strong>Automated tests for the Trial section</strong> — QA checks now run automatically to keep the trial management area working correctly.</span><a class="ticket-key-link" href="https://globalwebindex.atlassian.net/browse/UMDA-3661" target="_blank">UMDA-3661</a><span class="sprint-pill pill-52">S52</span></div>
+          <div class="ticket-row"><div class="ticket-dot"></div><span class="ticket-plain"><strong>Added a Cancel button</strong> — admins can safely discard edits without accidentally saving something they didn't mean to.</span><a class="ticket-key-link" href="https://globalwebindex.atlassian.net/browse/UMDA-3708" target="_blank">UMDA-3708</a><span class="sprint-pill pill-52">S52</span></div>
+        </div>
+      </div>
+      <div class="theme-card" onclick="toggleTheme(this)">
+        <div class="theme-header">
+          <div class="theme-icon" style="background:#fff3e8;">🏢</div>
+          <span class="theme-name">Easier search across organisations</span>
+          <span class="theme-meta">2 items</span>
+          <span class="theme-chevron">▼</span>
+        </div>
+        <div class="theme-body">
+          <div class="ticket-row"><div class="ticket-dot"></div><span class="ticket-plain"><strong>Search by Org ID is live</strong> — CS and support can now paste an organisation's ID number directly into the search bar to find them instantly.</span><a class="ticket-key-link" href="https://globalwebindex.atlassian.net/browse/UMDA-3684" target="_blank">UMDA-3684</a><span class="sprint-pill pill-51">S51</span></div>
+          <div class="ticket-row"><div class="ticket-dot"></div><span class="ticket-plain"><strong>Fixed duplicate results bug</strong> — organisations were showing up twice in long lists when scrolling; now each one only appears once.</span><a class="ticket-key-link" href="https://globalwebindex.atlassian.net/browse/UMDA-3683" target="_blank">UMDA-3683</a><span class="sprint-pill pill-51">S51</span></div>
+        </div>
+      </div>
+      <div class="theme-card" onclick="toggleTheme(this)">
+        <div class="theme-header">
+          <div class="theme-icon" style="background:#f4f4f8;">⚙️</div>
+          <span class="theme-name">AI coding guides across all our codebases</span>
+          <span class="theme-meta">11 repos</span>
+          <span class="theme-chevron">▼</span>
+        </div>
+        <div class="theme-body">
+          <div class="ticket-row"><div class="ticket-dot"></div><span class="ticket-plain"><strong>What is this?</strong> We've added a file called AGENTS.md to each codebase — a briefing document for AI coding tools that tells them how our team works, what rules to follow, and how to write code that fits our standards. Faster, more consistent AI-assisted development.</span></div>
+          <div class="ticket-row"><div class="ticket-dot"></div><span class="ticket-plain"><strong>Sprint 51 — 6 repos:</strong> admin-users · bundles · sso-proxy · organisations · registrations · users</span><span class="sprint-pill pill-51">S51</span></div>
+          <div class="ticket-row"><div class="ticket-dot"></div><span class="ticket-plain"><strong>Sprint 52 — 7 more repos:</strong> core-users · admin-api-deals · admin-kernel · admin-navbar · service-tokens · platform2-account-settings · susi — completing the full I&amp;A rollout.</span><span class="sprint-pill pill-52">S52</span></div>
+        </div>
+      </div>
+    </div>
+    <div class="sprint-stats-bar">
+      <div class="sprint-stat"><div class="sprint-stat-num">31</div><div class="sprint-stat-label">Tickets completed</div></div>
+      <div class="sprint-stat"><div class="sprint-stat-num">7</div><div class="sprint-stat-label">WorkOS tasks delivered</div></div>
+      <div class="sprint-stat"><div class="sprint-stat-num">10</div><div class="sprint-stat-label">Admin sections built or tested</div></div>
+      <div class="sprint-stat"><div class="sprint-stat-num">11</div><div class="sprint-stat-label">Codebases upgraded with AI guides</div></div>
+    </div>
+  </div>
+
+  <!-- S51 -->
+  <div class="sprint-panel" id="panel-51">
+    <div class="theme-grid">
+      <div class="theme-card" onclick="toggleTheme(this)">
+        <div class="theme-header"><div class="theme-icon" style="background:#e8f1ff;">🔐</div><span class="theme-name">Moving to WorkOS</span><span class="theme-meta">4 items</span><span class="theme-chevron">▼</span></div>
+        <div class="theme-body">
+          <div class="ticket-row"><div class="ticket-dot"></div><span class="ticket-plain"><strong>Planned the data transfer</strong> — mapped how to move all users and orgs to the new sign-in platform safely.</span><a class="ticket-key-link" href="https://globalwebindex.atlassian.net/browse/UMDA-3458" target="_blank">UMDA-3458</a></div>
+          <div class="ticket-row"><div class="ticket-dot"></div><span class="ticket-plain"><strong>Cleared out ghost accounts</strong> — removed empty organisations with no users from our system.</span><a class="ticket-key-link" href="https://globalwebindex.atlassian.net/browse/UMDA-3566" target="_blank">UMDA-3566</a></div>
+          <div class="ticket-row"><div class="ticket-dot"></div><span class="ticket-plain"><strong>Built a real-time sync listener</strong> — our system now reacts automatically to changes in WorkOS.</span><a class="ticket-key-link" href="https://globalwebindex.atlassian.net/browse/UMDA-3579" target="_blank">UMDA-3579</a></div>
+          <div class="ticket-row"><div class="ticket-dot"></div><span class="ticket-plain"><strong>Decided on the sign-in page approach</strong> — evaluated WorkOS's page vs SUSI and made a recommendation.</span><a class="ticket-key-link" href="https://globalwebindex.atlassian.net/browse/UMDA-3671" target="_blank">UMDA-3671</a></div>
+        </div>
+      </div>
+      <div class="theme-card" onclick="toggleTheme(this)">
+        <div class="theme-header"><div class="theme-icon" style="background:#e8fff4;">🖥️</div><span class="theme-name">Rebuilding the admin tool</span><span class="theme-meta">4 items</span><span class="theme-chevron">▼</span></div>
+        <div class="theme-body">
+          <div class="ticket-row"><div class="ticket-dot"></div><span class="ticket-plain"><strong>Built the Access Plan view</strong> — see and edit a user's platform access from one page.</span><a class="ticket-key-link" href="https://globalwebindex.atlassian.net/browse/UMDA-3586" target="_blank">UMDA-3586</a></div>
+          <div class="ticket-row"><div class="ticket-dot"></div><span class="ticket-plain"><strong>Built the Trial view</strong> — trial status, expiry and management in one place.</span><a class="ticket-key-link" href="https://globalwebindex.atlassian.net/browse/UMDA-3588" target="_blank">UMDA-3588</a></div>
+          <div class="ticket-row"><div class="ticket-dot"></div><span class="ticket-plain"><strong>Verified old link redirects</strong> — bookmarks to old pages now route to the correct new pages.</span><a class="ticket-key-link" href="https://globalwebindex.atlassian.net/browse/UMDA-3659" target="_blank">UMDA-3659</a></div>
+          <div class="ticket-row"><div class="ticket-dot"></div><span class="ticket-plain"><strong>Added automated tests</strong> for the Access section to catch future regressions.</span><a class="ticket-key-link" href="https://globalwebindex.atlassian.net/browse/UMDA-3660" target="_blank">UMDA-3660</a></div>
+        </div>
+      </div>
+      <div class="theme-card" onclick="toggleTheme(this)">
+        <div class="theme-header"><div class="theme-icon" style="background:#fff3e8;">🏢</div><span class="theme-name">Organisation search</span><span class="theme-meta">2 items</span><span class="theme-chevron">▼</span></div>
+        <div class="theme-body">
+          <div class="ticket-row"><div class="ticket-dot"></div><span class="ticket-plain"><strong>Search by Org ID now live</strong> — paste an ID to find any organisation instantly.</span><a class="ticket-key-link" href="https://globalwebindex.atlassian.net/browse/UMDA-3684" target="_blank">UMDA-3684</a></div>
+          <div class="ticket-row"><div class="ticket-dot"></div><span class="ticket-plain"><strong>Fixed duplicate results bug</strong> — organisations no longer appear twice in long lists.</span><a class="ticket-key-link" href="https://globalwebindex.atlassian.net/browse/UMDA-3683" target="_blank">UMDA-3683</a></div>
+        </div>
+      </div>
+      <div class="theme-card" onclick="toggleTheme(this)">
+        <div class="theme-header"><div class="theme-icon" style="background:#f4f4f8;">⚙️</div><span class="theme-name">AI coding guides</span><span class="theme-meta">6 repos</span><span class="theme-chevron">▼</span></div>
+        <div class="theme-body">
+          <div class="ticket-row"><div class="ticket-dot"></div><span class="ticket-plain">Added AI coding briefing files to <strong>6 repos:</strong> admin-users · bundles · sso-proxy · organisations · registrations · users</span></div>
+        </div>
+      </div>
+    </div>
+    <div class="sprint-stats-bar">
+      <div class="sprint-stat"><div class="sprint-stat-num">10</div><div class="sprint-stat-label">Tickets completed</div></div>
+      <div class="sprint-stat"><div class="sprint-stat-num">4</div><div class="sprint-stat-label">WorkOS tasks</div></div>
+      <div class="sprint-stat"><div class="sprint-stat-num">2</div><div class="sprint-stat-label">Org search improvements</div></div>
+      <div class="sprint-stat"><div class="sprint-stat-num">6</div><div class="sprint-stat-label">Repos upgraded</div></div>
+    </div>
+  </div>
+
+  <!-- S52 -->
+  <div class="sprint-panel" id="panel-52">
+    <div class="theme-grid">
+      <div class="theme-card" onclick="toggleTheme(this)">
+        <div class="theme-header"><div class="theme-icon" style="background:#e8f1ff;">🔐</div><span class="theme-name">Moving to WorkOS</span><span class="theme-meta">3 items</span><span class="theme-chevron">▼</span></div>
+        <div class="theme-body">
+          <div class="ticket-row"><div class="ticket-dot"></div><span class="ticket-plain"><strong>Built the migration tools</strong> — automated scripts to move all users and orgs into WorkOS when we're ready.</span><a class="ticket-key-link" href="https://globalwebindex.atlassian.net/browse/UMDA-3694" target="_blank">UMDA-3694</a></div>
+          <div class="ticket-row"><div class="ticket-dot"></div><span class="ticket-plain"><strong>Connected the "new user" signal</strong> — our system now handles WorkOS sign-up notifications correctly.</span><a class="ticket-key-link" href="https://globalwebindex.atlassian.net/browse/UMDA-3695" target="_blank">UMDA-3695</a></div>
+          <div class="ticket-row"><div class="ticket-dot"></div><span class="ticket-plain"><strong>Engineering alignment session</strong> — agreed on next build steps to keep the migration moving.</span><a class="ticket-key-link" href="https://globalwebindex.atlassian.net/browse/UMDA-3696" target="_blank">UMDA-3696</a></div>
+        </div>
+      </div>
+      <div class="theme-card" onclick="toggleTheme(this)">
+        <div class="theme-header"><div class="theme-icon" style="background:#e8fff4;">🖥️</div><span class="theme-name">Rebuilding the admin tool</span><span class="theme-meta">6 items</span><span class="theme-chevron">▼</span></div>
+        <div class="theme-body">
+          <div class="ticket-row"><div class="ticket-dot"></div><span class="ticket-plain"><strong>Unsaved changes warning</strong> — admins are now reminded to save before leaving a page with open edits.</span><a class="ticket-key-link" href="https://globalwebindex.atlassian.net/browse/UMDA-3587" target="_blank">UMDA-3587</a></div>
+          <div class="ticket-row"><div class="ticket-dot"></div><span class="ticket-plain"><strong>Devices view built</strong> — shows login devices per user with a registration link.</span><a class="ticket-key-link" href="https://globalwebindex.atlassian.net/browse/UMDA-3589" target="_blank">UMDA-3589</a></div>
+          <div class="ticket-row"><div class="ticket-dot"></div><span class="ticket-plain"><strong>Perishable Links view built</strong> — one-time access links now viewable and manageable in one place.</span><a class="ticket-key-link" href="https://globalwebindex.atlassian.net/browse/UMDA-3590" target="_blank">UMDA-3590</a></div>
+          <div class="ticket-row"><div class="ticket-dot"></div><span class="ticket-plain"><strong>Navigation links updated</strong> — clicking a user now goes directly to the correct new access page.</span><a class="ticket-key-link" href="https://globalwebindex.atlassian.net/browse/UMDA-3592" target="_blank">UMDA-3592</a></div>
+          <div class="ticket-row"><div class="ticket-dot"></div><span class="ticket-plain"><strong>Automated tests for Trial section</strong> — QA checks run automatically to keep things working correctly.</span><a class="ticket-key-link" href="https://globalwebindex.atlassian.net/browse/UMDA-3661" target="_blank">UMDA-3661</a></div>
+          <div class="ticket-row"><div class="ticket-dot"></div><span class="ticket-plain"><strong>Cancel button added</strong> — safely discard edits without accidentally saving unwanted changes.</span><a class="ticket-key-link" href="https://globalwebindex.atlassian.net/browse/UMDA-3708" target="_blank">UMDA-3708</a></div>
+        </div>
+      </div>
+      <div class="theme-card" onclick="toggleTheme(this)" style="grid-column:span 2;">
+        <div class="theme-header"><div class="theme-icon" style="background:#f4f4f8;">⚙️</div><span class="theme-name">AI coding guides — full rollout complete</span><span class="theme-meta">7 repos</span><span class="theme-chevron">▼</span></div>
+        <div class="theme-body">
+          <div class="ticket-row"><div class="ticket-dot"></div><span class="ticket-plain">Added AI coding guides to <strong>7 more repos:</strong> core-users · admin-api-deals · admin-kernel · admin-navbar · service-tokens · platform2-account-settings · susi — every active I&amp;A codebase now has an AI guide.</span></div>
+        </div>
+      </div>
+    </div>
+    <div class="sprint-stats-bar">
+      <div class="sprint-stat"><div class="sprint-stat-num">21</div><div class="sprint-stat-label">Tickets completed</div></div>
+      <div class="sprint-stat"><div class="sprint-stat-num">3</div><div class="sprint-stat-label">WorkOS tasks</div></div>
+      <div class="sprint-stat"><div class="sprint-stat-num">6</div><div class="sprint-stat-label">Admin sections built or tested</div></div>
+      <div class="sprint-stat"><div class="sprint-stat-num">7</div><div class="sprint-stat-label">Final repos upgraded</div></div>
+    </div>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════════
+     FEATURE FOCUS BANNER — MULTI-ORG
+═══════════════════════════════════════════ -->
+<div class="banner" style="margin-top:0;">
+  <h3>Feature Focus: Multi-Org Filtering</h3>
+  <div class="banner-line"></div>
+</div>
+
+<!-- ═══════════════════════════════════════════
+     FEATURE FOCUS: MULTI-ORG FILTERING
+═══════════════════════════════════════════ -->
+<div class="slide">
+  <div class="slide-header">
+    <img class="title-icon"
+      src="https://raw.githubusercontent.com/jdennis-ctrl/umiverse-monthly--review/main/identity-logo"
+      alt="I&A"
+      onerror="this.style.cssText='width:52px;height:52px;border-radius:12px;background:#ff0077;flex-shrink:0;';this.removeAttribute('src')"/>
+    <div class="slide-header-text">
+      <h2>Feature Focus: Multi-Org Filtering</h2>
+      <p>Giving CS and operations teams faster, smarter ways to manage users across multiple organisations</p>
+    </div>
+  </div>
+  <div class="feature-grid">
+    <div class="feature-card">
+      <div class="feature-card-head" style="background:#fff0f7;">
+        <span style="font-size:18px;">🔍</span>
+        <h4 style="font-size:14px;font-weight:700;color:#ff0077;">Search by Organisation ID</h4>
+      </div>
+      <div class="feature-card-body">
+        <div class="detail-item"><div class="dot"></div><span>Previously, finding a specific organisation required searching by name — slow if you had an ID but not the exact name</span></div>
+        <div class="detail-item"><div class="dot"></div><span>CS teams can now paste an Org ID directly into the search bar for an instant match</span></div>
+        <div class="detail-item"><div class="dot"></div><span>Particularly useful for support workflows where clients provide their Org ID in tickets</span></div>
+      </div>
+    </div>
+    <div class="feature-card">
+      <div class="feature-card-head" style="background:#f0fff4;">
+        <span style="font-size:18px;">🐛</span>
+        <h4 style="font-size:14px;font-weight:700;color:#0f6e56;">Pagination Bug Fix</h4>
+      </div>
+      <div class="feature-card-body">
+        <div class="detail-item"><div class="dot"></div><span>When scrolling through large organisation lists, the same org was appearing multiple times due to an unstable sort order</span></div>
+        <div class="detail-item"><div class="dot"></div><span>Fixed the underlying sort logic so each organisation appears exactly once, regardless of list size</span></div>
+        <div class="detail-item"><div class="dot"></div><span>Improves reliability for teams managing high-volume organisation searches</span></div>
+      </div>
+    </div>
+    <div class="feature-card" style="grid-column:span 2;">
+      <div class="feature-card-head" style="background:#111;">
+        <span style="font-size:18px;">🗺️</span>
+        <h4 style="font-size:14px;font-weight:700;color:#fff;">What's coming next for Multi-Org</h4>
+      </div>
+      <div class="feature-card-body" style="background:#111;color:#ccc;">
+        <div style="display:flex;gap:16px;flex-wrap:wrap;">
+          <div style="flex:1;min-width:200px;">
+            <div class="detail-item"><div class="dot"></div><span>Bulk actions across multiple organisations in a single operation</span></div>
+            <div class="detail-item"><div class="dot"></div><span>Filter users by their organisation membership</span></div>
+          </div>
+          <div style="flex:1;min-width:200px;">
+            <div class="detail-item"><div class="dot"></div><span>Export filtered organisation lists for reporting</span></div>
+            <div class="detail-item"><div class="dot"></div><span>Organisation hierarchy view for enterprise clients</span></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════════
+     DESIGN UPDATE BANNER — BULK EDIT
+═══════════════════════════════════════════ -->
+<div class="banner">
+  <h3>Design Update</h3>
+  <div class="banner-line"></div>
+</div>
+
+<!-- ═══════════════════════════════════════════
+     DESIGN UPDATE: BULK EDITING BUNDLES
+═══════════════════════════════════════════ -->
+<div class="slide">
+  <div class="slide-header">
+    <img class="title-icon"
+      src="https://raw.githubusercontent.com/jdennis-ctrl/umiverse-monthly--review/main/identity-logo"
+      alt="I&A"
+      onerror="this.style.cssText='width:52px;height:52px;border-radius:12px;background:#ff0077;flex-shrink:0;';this.removeAttribute('src')"/>
+    <div class="slide-header-text">
+      <h2>Design Update: Exploration — Bulk Editing Bundles</h2>
+      <p>Wireframe exploration of user-level bundle bulk editing to reduce manual overhead for CS teams</p>
+    </div>
+  </div>
+  <div class="design-grid">
+    <div>
+      <div class="design-label">The problem</div>
+      <div style="border:1.5px solid #f0f0f4;border-radius:12px;overflow:hidden;margin-bottom:16px;">
+        <div style="background:#fafafa;padding:12px 16px;"><h4 style="font-size:13px;font-weight:700;color:#333;">🎯 Why this matters</h4></div>
+        <div style="padding:14px 16px;">
+          <div class="detail-item"><div class="dot"></div><span style="font-size:13px;color:#444;line-height:1.5;">Currently there is no way to bulk edit bundles at a user level — every change must be made individually</span></div>
+          <div class="detail-item"><div class="dot"></div><span style="font-size:13px;color:#444;line-height:1.5;">This creates significant manual overhead for CS when onboarding or updating large client accounts</span></div>
+          <div class="detail-item"><div class="dot"></div><span style="font-size:13px;color:#444;line-height:1.5;">A user-level bulk edit would allow faster, more accurate client setup at scale</span></div>
+        </div>
+      </div>
+      <div class="design-label">Status</div>
+      <div style="display:flex;gap:8px;flex-wrap:wrap;">
+        <span class="pill" style="background:#fff0f7;color:#ff0077;">🔧 In exploration</span>
+        <span class="pill" style="background:#f0fff4;color:#0f6e56;">✓ Spike complete</span>
+        <span class="pill" style="background:#e8f1ff;color:#185fa5;">Design underway</span>
+      </div>
+    </div>
+    <div style="display:flex;flex-direction:column;gap:10px;">
+      <div style="border-radius:12px;overflow:hidden;border:1.5px solid #e0e0e0;box-shadow:0 4px 20px rgba(0,0,0,0.08);flex:1;min-height:180px;background:#f8f8f8;display:flex;align-items:center;justify-content:center;">
+        <img src="https://raw.githubusercontent.com/jdennis-ctrl/umiverse-monthly-review/main/bundle-screenshot.png"
+          alt="Bundle Bulk Edit Wireframe"
+          style="width:100%;border-radius:10px;display:block;"
+          onerror="this.parentElement.innerHTML='<div style=\'padding:32px;text-align:center;color:#aaa;font-size:13px;\'>📐 Wireframe — add bundle-screenshot.png to your repo</div>'"/>
+      </div>
+      <div style="display:flex;align-items:center;justify-content:space-between;">
+        <span style="font-size:12px;color:#5461c8;font-weight:700;font-style:italic;">Admin — Bundle bulk edit exploration wireframe</span>
+        <a href="https://www.figma.com/design/oqkmge8EIuHWasBBnttUbp/Bulk-actions-%E2%80%93-Exploration?node-id=1073-52500&t=98mrTWM0TWiNmjfL-1" target="_blank"
+          style="font-size:12px;font-weight:700;color:#ff0077;text-decoration:none;">🔗 View full exploration</a>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════════
+     DESIGN UPDATE BANNER — UX DISCOVERY
+═══════════════════════════════════════════ -->
+<div class="banner">
+  <h3>Design Update: Synthesising our UX Discovery</h3>
+  <div class="banner-line"></div>
+</div>
+
+<!-- ═══════════════════════════════════════════
+     DESIGN UPDATE: UX DISCOVERY - PROTO PERSONAS
+═══════════════════════════════════════════ -->
+<div class="slide" style="background:#0d0d0d;box-shadow:0 4px 40px rgba(255,0,119,0.15);">
+  <div class="slide-header">
+    <img class="title-icon"
+      src="https://raw.githubusercontent.com/jdennis-ctrl/umiverse-monthly--review/main/identity-logo"
+      alt="I&A"
+      onerror="this.style.cssText='width:52px;height:52px;border-radius:12px;background:#ff0077;flex-shrink:0;';this.removeAttribute('src')"/>
+    <div class="slide-header-text">
+      <h2 style="color:#ff0077;">Design Update: UX Discovery — Proto Personas</h2>
+      <p style="color:#666;">We spoke to internal teams across CS, PX, and Engineering to understand how people really use the admin platform. Here's what we found.</p>
+    </div>
+  </div>
+
+  <!-- Who we spoke to -->
+  <div style="margin-bottom:24px;">
+    <div style="font-size:10px;font-weight:700;color:#ff0077;text-transform:uppercase;letter-spacing:2px;margin-bottom:10px;">Who we spoke to</div>
+    <div style="display:flex;gap:8px;flex-wrap:wrap;">
+      <span class="pill" style="background:rgba(255,0,119,0.15);color:#ff6eb3;border:1px solid rgba(255,0,119,0.2);">CS Enterprise</span>
+      <span class="pill" style="background:rgba(84,97,200,0.15);color:#8892e8;border:1px solid rgba(84,97,200,0.2);">Product Experience</span>
+      <span class="pill" style="background:rgba(15,110,86,0.2);color:#4ecfa0;border:1px solid rgba(15,110,86,0.2);">Engineering</span>
+      <span class="pill" style="background:rgba(186,117,23,0.15);color:#f0b94a;border:1px solid rgba(186,117,23,0.2);">Product Design</span>
+      <span class="pill" style="background:rgba(255,255,255,0.07);color:#aaa;border:1px solid rgba(255,255,255,0.1);">Commercial Operations</span>
+    </div>
+  </div>
+
+  <!-- Proto Personas -->
+  <div class="persona-grid" style="margin-bottom:24px;">
+    <div class="persona-card">
+      <div class="persona-avatar" style="background:rgba(255,0,119,0.15);">👩‍💼</div>
+      <div class="persona-name">The CS Operator</div>
+      <div class="persona-role">CS Enterprise / Account Management</div>
+      <div class="persona-needs">Uses admin daily to onboard clients, manage access, and resolve account issues. Needs speed — repetitive tasks slow them down significantly at scale.</div>
+      <div>
+        <span class="persona-tag">Bulk actions</span>
+        <span class="persona-tag">Speed</span>
+        <span class="persona-tag">Reliability</span>
+      </div>
+    </div>
+    <div class="persona-card">
+      <div class="persona-avatar" style="background:rgba(84,97,200,0.15);">🛠️</div>
+      <div class="persona-name">The Power User</div>
+      <div class="persona-role">Product Experience / Operations</div>
+      <div class="persona-needs">Investigates access issues and permissions problems. Needs clear audit trails and the ability to diagnose exactly what a user can and can't see on the platform.</div>
+      <div>
+        <span class="persona-tag">Audit trail</span>
+        <span class="persona-tag">Diagnostics</span>
+        <span class="persona-tag">Permissions visibility</span>
+      </div>
+    </div>
+    <div class="persona-card">
+      <div class="persona-avatar" style="background:rgba(186,117,23,0.15);">🔐</div>
+      <div class="persona-name">The Security Steward</div>
+      <div class="persona-role">IT / Security / Compliance</div>
+      <div class="persona-needs">Manages SSO configuration and user lifecycle at an organisational level. Needs confidence that changes are logged, reversible, and won't cause unexpected access issues.</div>
+      <div>
+        <span class="persona-tag">SSO</span>
+        <span class="persona-tag">Logging</span>
+        <span class="persona-tag">Change management</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- Key themes -->
+  <div style="background:rgba(255,255,255,0.04);border-radius:12px;padding:20px 24px;border:1px solid rgba(255,255,255,0.08);">
+    <div style="font-size:10px;font-weight:700;color:#ff0077;text-transform:uppercase;letter-spacing:2px;margin-bottom:12px;">Key themes emerging from discovery</div>
+    <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:16px;">
+      <div><div style="font-size:13px;font-weight:700;color:#fff;margin-bottom:4px;">⚡ Speed over completeness</div><div style="font-size:12px;color:#888;line-height:1.5;">Users want to complete common tasks in as few clicks as possible — not navigate complex menus</div></div>
+      <div><div style="font-size:13px;font-weight:700;color:#fff;margin-bottom:4px;">🔎 Visibility of permissions</div><div style="font-size:12px;color:#888;line-height:1.5;">"What can this user actually see?" is the most common question — and currently very hard to answer quickly</div></div>
+      <div><div style="font-size:13px;font-weight:700;color:#fff;margin-bottom:4px;">📋 Trust in the system</div><div style="font-size:12px;color:#888;line-height:1.5;">Users want confidence that changes are logged and reversible — fear of breaking something holds them back</div></div>
+    </div>
+  </div>
+
+  <div style="margin-top:16px;display:flex;gap:12px;align-items:center;">
+    <a href="https://globalwebindex.atlassian.net/wiki/spaces/UMiversity/pages/5547425807/Product+Design+UM+Discovery" target="_blank"
+      style="font-size:12px;font-weight:700;color:#ff0077;text-decoration:none;background:rgba(255,0,119,0.1);padding:8px 16px;border-radius:20px;border:1px solid rgba(255,0,119,0.2);">
+      🔗 View full discovery page
+    </a>
+    <span style="font-size:11px;color:#555;">Phase 1 interviews complete · Synthesis in progress · Playback scheduled</span>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════════
+     UPCOMING BANNER
+═══════════════════════════════════════════ -->
+<div class="banner">
+  <h3>Upcoming In Our Next Sprints &amp; Beyond</h3>
+  <div class="banner-line"></div>
+</div>
+
+<!-- ═══════════════════════════════════════════
+     UPCOMING SLIDE
+═══════════════════════════════════════════ -->
+<div class="slide">
+  <div class="slide-header">
+    <img class="title-icon"
+      src="https://raw.githubusercontent.com/jdennis-ctrl/umiverse-monthly--review/main/identity-logo"
+      alt="I&A"
+      onerror="this.style.cssText='width:52px;height:52px;border-radius:12px;background:#ff0077;flex-shrink:0;';this.removeAttribute('src')"/>
+    <div class="slide-header-text">
+      <h2>Upcoming In Our Next Sprints &amp; Beyond</h2>
+      <p>What Identity &amp; Access is focused on over the coming weeks</p>
+    </div>
+  </div>
+  <div class="upcoming-grid">
+    <div class="upcoming-card">
+      <div class="upcoming-head" style="background:#ff0077;">
+        <span style="font-size:20px;">🔐</span>
+        <div class="upcoming-head-text">
+          <span class="upcoming-head-title">WorkOS Migration — Phase 2</span>
+          <span class="upcoming-head-sub">Next 2 sprints</span>
+        </div>
+      </div>
+      <div class="upcoming-body">
+        <div class="detail-item"><div class="dot"></div><span style="font-size:13px;color:#444;line-height:1.5;">Run live migration of users and organisations using the scripts built in Sprint 52</span></div>
+        <div class="detail-item"><div class="dot"></div><span style="font-size:13px;color:#444;line-height:1.5;">Implement sign-in flow using the recommended approach from our SUSI vs WorkOS evaluation</span></div>
+        <div class="detail-item"><div class="dot"></div><span style="font-size:13px;color:#444;line-height:1.5;">Begin end-to-end testing of the new authentication journey</span></div>
+      </div>
+    </div>
+    <div class="upcoming-card">
+      <div class="upcoming-head" style="background:#111;">
+        <span style="font-size:20px;">🖥️</span>
+        <div class="upcoming-head-text">
+          <span class="upcoming-head-title">Admin Tool — Continued Build</span>
+          <span class="upcoming-head-sub">Next 2 sprints</span>
+        </div>
+      </div>
+      <div class="upcoming-body">
+        <div class="detail-item"><div class="dot"></div><span style="font-size:13px;color:#444;line-height:1.5;">Continue section-by-section rebuild of the user management area in React &amp; Go</span></div>
+        <div class="detail-item"><div class="dot"></div><span style="font-size:13px;color:#444;line-height:1.5;">Close Account redesign — improved UX for the account closure flow</span></div>
+        <div class="detail-item"><div class="dot"></div><span style="font-size:13px;color:#444;line-height:1.5;">Further QA automation coverage as new sections land</span></div>
+      </div>
+    </div>
+    <div class="upcoming-card">
+      <div class="upcoming-head" style="background:#5461c8;">
+        <span style="font-size:20px;">🏢</span>
+        <div class="upcoming-head-text">
+          <span class="upcoming-head-title">Bulk Bundle Editing</span>
+          <span class="upcoming-head-sub">Design &amp; scoping phase</span>
+        </div>
+      </div>
+      <div class="upcoming-body">
+        <div class="detail-item"><div class="dot"></div><span style="font-size:13px;color:#444;line-height:1.5;">UX design exploration continues based on spike findings from Sprint 51</span></div>
+        <div class="detail-item"><div class="dot"></div><span style="font-size:13px;color:#444;line-height:1.5;">Stakeholder review of wireframes before moving to build</span></div>
+        <div class="detail-item"><div class="dot"></div><span style="font-size:13px;color:#444;line-height:1.5;">Aligning on the right scope for an initial MVP delivery</span></div>
+      </div>
+    </div>
+    <div class="upcoming-card">
+      <div class="upcoming-head" style="background:#0f6e56;">
+        <span style="font-size:20px;">🔍</span>
+        <div class="upcoming-head-text">
+          <span class="upcoming-head-title">UX Discovery Playback</span>
+          <span class="upcoming-head-sub">Stakeholder readout</span>
+        </div>
+      </div>
+      <div class="upcoming-body">
+        <div class="detail-item"><div class="dot"></div><span style="font-size:13px;color:#444;line-height:1.5;">Synthesise all interview findings into themes and opportunity areas</span></div>
+        <div class="detail-item"><div class="dot"></div><span style="font-size:13px;color:#444;line-height:1.5;">Present proto-persona findings to wider stakeholders for feedback</span></div>
+        <div class="detail-item"><div class="dot"></div><span style="font-size:13px;color:#444;line-height:1.5;">Use insights to inform the next phase of admin modernisation priorities</span></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+  function switchSprint(id, btn) {
+    document.querySelectorAll('.sprint-tab').forEach(t => t.classList.remove('active'));
+    btn.classList.add('active');
+    document.querySelectorAll('.sprint-panel').forEach(p => p.classList.remove('active'));
+    document.getElementById('panel-' + id).classList.add('active');
+  }
+  function toggleTheme(card) {
+    var isOpen = card.classList.contains('open');
+    card.closest('.theme-grid').querySelectorAll('.theme-card').forEach(function(c){ c.classList.remove('open'); });
+    if (!isOpen) card.classList.add('open');
+  }
+</script>
+</body>
+</html>
