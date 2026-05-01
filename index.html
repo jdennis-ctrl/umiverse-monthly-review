@@ -1823,6 +1823,15 @@
   .closing p a:hover{color:#fff}
   .closing-loom-link{color:#ffb3d4;font-weight:700;text-decoration:underline;text-underline-offset:4px;text-decoration-thickness:2px}
   .closing-loom-link:hover{color:#fff}
+  .closing-loom-embed{
+    width:100%;max-width:min(920px,100%);margin:8px auto 36px;
+    border-radius:18px;overflow:hidden;
+    aspect-ratio:16/9;background:#000;
+    box-shadow:0 24px 60px rgba(0,0,0,0.45),0 0 0 1px rgba(255,255,255,0.1) inset;
+  }
+  .closing-loom-embed iframe{
+    display:block;width:100%;height:100%;border:0;
+  }
   /* Identity / Access hub — Confluence CTA */
   .closing-hub-cta{
     display:block;text-decoration:none;color:inherit;text-align:left;
@@ -3122,7 +3131,14 @@
 <section class="closing">
   <div class="closing-inner">
     <h2>That's the <span class="ital">month.</span></h2>
-    <p>Thanks for reading. For a video walkthrough that covers these slides in more detail, watch the <a id="closingLoomLink" class="closing-loom-link" href="#" target="_blank" rel="noopener noreferrer" title="Paste your Loom URL into this link’s href in index.html when it’s ready">Loom recording</a>. Questions, comments, or want to dig into anything? Reach out to me directly, or drop a message into the <a href="https://globalwebindex.slack.com/archives/C0KUYBA2G" target="_blank" rel="noopener noreferrer">#squad-users-management</a> channel in Slack and we will get back to you.</p>
+    <div class="closing-loom-embed" role="region" aria-label="Video walkthrough of this deck">
+      <iframe src="https://www.loom.com/embed/bb7816a6d62c4ebe98c7315ced542eaa"
+        title="Monthly review deck walkthrough (Loom)"
+        allow="autoplay; fullscreen; picture-in-picture; clipboard-write"
+        allowfullscreen
+        loading="lazy"></iframe>
+    </div>
+    <p>Thanks for reading. The walkthrough is embedded above — or <a id="closingLoomLink" class="closing-loom-link" href="https://www.loom.com/share/bb7816a6d62c4ebe98c7315ced542eaa" target="_blank" rel="noopener noreferrer" title="Open this Loom in a new tab">open it in Loom</a> in a new tab. Questions, comments, or want to dig into anything? Reach out to me directly, or drop a message into the <a href="https://globalwebindex.slack.com/archives/C0KUYBA2G" target="_blank" rel="noopener noreferrer">#squad-users-management</a> channel in Slack and we will get back to you.</p>
     <a class="closing-hub-cta" id="closingHubCta" href="https://globalwebindex.atlassian.net/wiki/spaces/UMiversity/pages/5153947649/UM+Identity+Access" target="_blank" rel="noopener noreferrer" aria-labelledby="closing-hub-heading" aria-describedby="closing-hub-lede">
       <span class="closing-hub-glow" aria-hidden="true"></span>
       <span class="closing-hub-inner">
