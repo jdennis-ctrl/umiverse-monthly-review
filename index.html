@@ -72,6 +72,7 @@
     position:relative;overflow:hidden;
     background:var(--paper);color:var(--ink);
     box-sizing:border-box;
+    isolation:isolate;
   }
   /* Layered backgrounds */
   .hero-bg-grid{
@@ -109,14 +110,16 @@
   .hero-main{
     flex:1 1 0;min-height:0;
     display:flex;align-items:center;justify-content:center;
-    position:relative;z-index:2;
+    position:relative;z-index:1;
     padding-block:clamp(8px,2vh,24px);
+    overflow:hidden;
   }
   .hero-top{
     display:flex;justify-content:space-between;align-items:center;
-    position:relative;z-index:2;flex-shrink:0;
+    position:relative;z-index:5;flex-shrink:0;
     margin-bottom:0;
     max-width:min(1240px,100%);margin-inline:auto;width:100%;
+    background:var(--paper);
   }
   .brand-mark{display:flex;align-items:center;gap:20px}
   .brand-glyphs{height:64px;width:auto;display:block}
@@ -165,7 +168,7 @@
 
   /* Hero center: title + logo composition */
   .hero-center{
-    position:relative;z-index:2;
+    position:relative;z-index:1;
     display:grid;grid-template-columns:minmax(0,1.12fr) minmax(0,0.88fr);
     gap:clamp(24px,4vw,56px);align-items:center;
     padding:0;width:100%;max-width:min(1240px,100%);margin-inline:auto;
@@ -269,11 +272,12 @@
 
   /* Hero bottom: scroll cue + ticker */
   .hero-bottom{
-    position:relative;z-index:2;
+    position:relative;z-index:5;
     display:flex;justify-content:flex-start;align-items:flex-end;gap:48px;
     border-top:3px solid #FF0077;padding-top:clamp(12px,2vh,18px);
     margin-top:auto;flex-shrink:0;
     max-width:min(1240px,100%);margin-inline:auto;width:100%;
+    background:var(--paper);
   }
   .hero-scroll{
     display:flex;align-items:center;gap:20px;font-size:18px;font-weight:700;
@@ -2405,7 +2409,7 @@
 <!-- ═══════════════════════════════════════
      CHAPTER 01 - SPRINT OVERVIEW (merged)
 ═══════════════════════════════════════ -->
-<section class="section" id="chapter-01" style="font-weight: 500; font-size: 2px; padding: 30px 64px 30px 120px; border-color: rgb(255, 0, 119)">
+<section class="section" id="chapter-01" style="padding: 30px 64px 30px 120px; border-color: rgb(255, 0, 119)">
   <div class="chapter-mark" style="gap: 10px; align-items: baseline; justify-content: flex-start; margin: 0px 0px 20px; text-align: left; font-size: 24px">
     <span class="num" style="font-size: 24px; font-weight: 600; letter-spacing: 0px; line-height: 1.5; height: 31px">01</span>
     <span style="font-size:24px; letter-spacing: 0px">Sprint overview</span>
